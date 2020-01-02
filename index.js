@@ -20,9 +20,8 @@ let notes = [
     important: true
   }
 ]
-
-const app = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' })
+const app = http.createServer((request, response) => {
+  response.writeHead(200, { 'Content-Type': 'application/json' })
   response.end(JSON.stringify(notes))
 })
 
