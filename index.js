@@ -26,16 +26,40 @@ app.get('/',(req,res) => {
   res.send('<h1>Hello World!</h1>');
 })
 
+/**
+ * General view of all notes
+ */
 app.get('/notes',(req,res)=>{
   res.json(notes)
 })
 
+/**
+ * Retrieve notes by id
+ */
 app.get('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const note = notes.find(note => note.id === id)
-  response.json(note)
+  
+  if (note) {
+    response.json(note)
+  } else {
+    response.status(404).end()
+  }
 })
 
+/**
+ * Notes deletion request
+ */
+app.delete('/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  notes = notes.filter(note => note.id !== id)
+
+  response.status(204).end()
+})
+
+/**
+ * Port where server is enabled.
+ */
 const PORT = 3001
 app.listen(PORT, ()=>{
   console.log(`Server running on port ${PORT}`)
