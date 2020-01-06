@@ -30,6 +30,12 @@ app.get('/notes',(req,res)=>{
   res.json(notes)
 })
 
+app.get('/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const note = notes.find(note => note.id === id)
+  response.json(note)
+})
+
 const PORT = 3001
 app.listen(PORT, ()=>{
   console.log(`Server running on port ${PORT}`)
