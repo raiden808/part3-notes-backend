@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 
 let notes = [
   {
@@ -55,6 +56,18 @@ app.delete('/notes/:id', (request, response) => {
   notes = notes.filter(note => note.id !== id)
 
   response.status(204).end()
+})
+
+/**
+ * Post request
+ */
+app.use(bodyParser.json())
+
+app.post('/notes', (request, response) => {
+  const note = request.body
+  console.log(note)
+
+  response.json(note)
 })
 
 /**
