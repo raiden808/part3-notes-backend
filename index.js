@@ -46,6 +46,11 @@ let notes = [
   }
 ]
 
+/**
+ * Gets static build from react and get backend from express.
+ */
+app.use(express.static('build'))
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
