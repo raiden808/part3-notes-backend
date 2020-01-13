@@ -1,7 +1,6 @@
-const express  = require('express')
-const app      = express()
-const cors     = require('cors')
-
+const express    = require('express')
+const app        = express()
+const cors       = require('cors')
 const bodyParser = require('body-parser')
 
 /**
@@ -13,7 +12,6 @@ app.use(bodyParser.json())
  * Allows request from any origin
  */
 app.use(cors())
-
 
 /**
  * Display detailed info on requests
@@ -30,7 +28,6 @@ app.use(requestLogger)
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-
 app.use(unknownEndpoint)
 
 let notes = [
