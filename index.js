@@ -25,11 +25,6 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
-// const unknownEndpoint = (request, response) => {
-//   response.status(404).send({ error: 'unknown endpoint' })
-// }
-// app.use(unknownEndpoint)
-
 let notes = [
   {
     id: 1,
@@ -62,6 +57,9 @@ const generateId = () => {
   return maxId + 1
 }
 
+/**
+ * Insert new notes.
+ */
 app.post('/notes', (request, response) => {
   const body = request.body
 
@@ -87,6 +85,9 @@ app.get('/notes', (request, response) => {
   response.json(notes)
 })
 
+/**
+ * Retrieve users by id
+ */
 app.get('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const note = notes.find(note => note.id === id)
@@ -97,6 +98,9 @@ app.get('/notes/:id', (request, response) => {
   }
 })
 
+/**
+ * Delete users by id
+ */
 app.delete('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   notes = notes.filter(note => note.id !== id)
@@ -104,12 +108,18 @@ app.delete('/notes/:id', (request, response) => {
   response.status(204).end()
 })
 
+/**
+ * If endpoint does not exist
+ */
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-
 app.use(unknownEndpoint)
 
+
+/**
+ * Port assigned to web app
+ */
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
