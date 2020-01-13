@@ -1,5 +1,6 @@
-const express = require('express')
-const app = express()
+const express  = require('express')
+const app      = express()
+const cors     = require('cors')
 
 const bodyParser = require('body-parser')
 
@@ -7,6 +8,12 @@ const bodyParser = require('body-parser')
  * Middleware request handler start with this.
  */
 app.use(bodyParser.json())
+
+/**
+ * Allows request from any origin
+ */
+app.use(cors())
+
 
 /**
  * Display detailed info on requests
