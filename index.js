@@ -3,7 +3,22 @@ const app = express()
 
 const bodyParser = require('body-parser')
 
+/**
+ * Middleware request handler start with this.
+ */
 app.use(bodyParser.json())
+
+/**
+ * Display detailed info on requests
+ */
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+app.use(requestLogger)
 
 let notes = [
   {
