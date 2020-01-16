@@ -1,9 +1,15 @@
 const mongoose = require('mongoose')
 
+/**
+ * Hides mongo url
+ */
 const url = process.env.MONGODB_URI
 
 console.log('connecting to',url)
 
+/**
+ * Connection verification
+ */
 mongoose.connect(url,{useNewUrlParser:true})
     .then(result =>{
         console.log('Connected to MongoDB')
