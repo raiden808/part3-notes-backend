@@ -2,6 +2,37 @@ const express    = require('express')
 const app        = express()
 const cors       = require('cors')
 const bodyParser = require('body-parser')
+const mongoose   = require('mongoose')
+require('dotenv').config()
+
+/**
+ * Initialize Mongodb
+ */
+const url =
+  `mongodb+srv://fullstack:${process.env.DB_PASS}@cluster0-bczta.mongodb.net/note-app?retryWrites=true&w=majority`
+
+mongoose.connect(url, { useNewUrlParser: true })
+
+/**
+ * The structure of the database
+ */
+const noteSchema = new mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean,
+})
+
+const Note = mongoose.model('Note',noteSchema)
+
+/**
+ * Modify Schema output of Mongoose
+ */
+noteSchema.set('toJSON',{
+  transform:(document,returnedObject) =>{
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
 
 /**
  * Middleware request handler start with this.
@@ -87,7 +118,12 @@ app.post('/api/notes', (request, response) => {
 })
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    /**
+     * converts returned array into new
+     */
+    response.json(notes.map(note => note.toJSON()))
+  })
 })
 
 /**
