@@ -29,15 +29,20 @@ const noteSchema = new mongoose.Schema({
   date: Date,
   important: Boolean,
 })
-
 const Note = mongoose.model('Note', noteSchema)
 
+/**
+ * Creating an object
+ */
 const note = new Note({
   content: 'HTML is Easy',
   date: new Date(),
   important: true,
 })
 
+/**
+ * Saves the object
+ */
 note.save().then(response => {
   console.log('note saved!')
   mongoose.connection.close()
