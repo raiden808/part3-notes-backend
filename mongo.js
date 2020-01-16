@@ -29,6 +29,11 @@ const noteSchema = new mongoose.Schema({
   date: Date,
   important: Boolean,
 })
+
+/**
+ * "Note" parameter is the singular name of the model. 
+ * Mongoose convention is to automatically name collections as the plural (e.g. notes)
+ */
 const Note = mongoose.model('Note', noteSchema)
 
 /**
@@ -40,10 +45,26 @@ const note = new Note({
   important: true,
 })
 
+
 /**
  * Saves the object
  */
-note.save().then(response => {
-  console.log('note saved!')
-  mongoose.connection.close()
+// note.save().then(response => {
+//   console.log('note saved!')
+
+//   /**
+//    * If save is not close program will not stop
+//    */
+//   mongoose.connection.close()
+// })
+
+/**
+ * Search function
+ * since find is {} it will get all the notes
+ */
+Note.find({}).then(result => {
+    result.forEach(note => {
+      console.log(note)
+    })
+    mongoose.connection.close()
 })
