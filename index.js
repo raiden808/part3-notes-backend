@@ -70,29 +70,28 @@ app.post('/api/notes',(request, response) =>{
 /**
  * Retrieves json object from mongodb
  */
-app.get('/api/notes', (request, response) => {
-  Note.find({}).then(note => {
-    if(note){
-      response.json(note.toJSON())
-    }else{
-      response.status(404).end()
-    }
+app.get('/api/notes', (request, response,next) => {
+   Note.find({}).then(notes => {
+    response.json(notes)
   })
-  /**
-   * Pass error to a handler
-   * if next is not empty it will move to
-   * the next error handling middleware
-   */
-  .catch(error => next(error))
 })
 
 /**
  * Retrieve users by id mongodb
  */
-app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id).then(note =>{
-    response.json(note.toJSON())
+app.get('/api/notes/:id', (request, response, next) => {
+  Note.findById(request.params.id)
+  .then(note => {
+    if (note) {
+      response.json(note.toJSON())
+    } else {
+      response.status(204).end()
+    }
   })
+  /**
+   * Pass to error middleware via next function
+   */
+  .catch(error => next(error))
 })
 
 /**
@@ -122,7 +121,6 @@ const errorHandler = (error, request, response, next) =>{
   if(error.name === 'CastError' && error.kind === 'ObjectId'){
     return response.status(400).send({error: 'malformatted id'})
   }
-
   next(error)
 }
 app.use(errorHandler)
