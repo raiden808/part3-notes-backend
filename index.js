@@ -71,12 +71,19 @@ app.post('/api/notes',(request, response) =>{
  * Retrieves json object from mongodb
  */
 app.get('/api/notes', (request, response) => {
-  Note.find({}).then(notes => {
-    /**
-     * converts returned array into new
-     */
-    response.json(notes.map(note => note.toJSON()))
+  Note.find({}).then(note => {
+    if(note){
+      response.json(note.toJSON())
+    }else{
+      response.status(404).end()
+    }
   })
+  /**
+   * Pass error to a handler
+   * if next is not empty it will move to
+   * the next error handling middleware
+   */
+  .catch(error => next(error))
 })
 
 /**
@@ -84,7 +91,7 @@ app.get('/api/notes', (request, response) => {
  */
 app.get('/api/notes/:id', (request, response) => {
   Note.findById(request.params.id).then(note =>{
-    response.json(note.toJSON)
+    response.json(note.toJSON())
   })
 })
 
@@ -106,6 +113,19 @@ const unknownEndpoint = (request, response) => {
 }
 app.use(unknownEndpoint)
 
+/**
+ * Error handling middleware
+ */
+const errorHandler = (error, request, response, next) =>{
+  console.log(error.message)
+
+  if(error.name === 'CastError' && error.kind === 'ObjectId'){
+    return response.status(400).send({error: 'malformatted id'})
+  }
+
+  next(error)
+}
+app.use(errorHandler)
 
 /**
  * Port assigned to web app
