@@ -98,11 +98,31 @@ app.get('/api/notes/:id', (request, response, next) => {
  * Delete users by id
  */
 app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
-
-  response.status(204).end()
+  Note.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
+
+/**
+ * Update Specific document
+ */
+app.put('/api/notes/:id', (request, response, next)=>{
+  const body = request.body
+
+  const note = {
+    content:body.content,
+    note:body.note
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note , {new:true})
+    .then(updatedNote =>{
+      response.json(updatedNote.toJSON())
+    })
+    .catch(error => next(error))
+})
+
 
 /**
  * If endpoint does not exist
