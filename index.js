@@ -113,11 +113,11 @@ app.put('/api/notes/:id', (request, response, next)=>{
 
   const note = {
     content:body.content,
-    note:body.note
+    important:body.important
   }
 
-  Note.findByIdAndUpdate(request.params.id, note , {new:true})
-    .then(updatedNote =>{
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
       response.json(updatedNote.toJSON())
     })
     .catch(error => next(error))
