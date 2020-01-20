@@ -30,17 +30,11 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-const generateId = () => {
-  const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => n.id))
-    : 0
-  return maxId + 1
-}
 
 /**
  * Post using mongoddb
  */
-app.post('/api/notes',(request, response, next) =>{
+app.post('/api/notes',(request, response, next) => {
   const body = request.body
   /**
    * Create new object for mongodb
@@ -61,7 +55,7 @@ app.post('/api/notes',(request, response, next) =>{
     /**
      * Recieved formatted response
      */
-    .then(savedAndFormattedNote =>{
+    .then(savedAndFormattedNote => {
       response.json(savedAndFormattedNote)
     })
     .catch(error => next(error))
@@ -71,9 +65,11 @@ app.post('/api/notes',(request, response, next) =>{
  * Retrieves json object from mongodb
  */
 app.get('/api/notes', (request, response,next) => {
-   Note.find({}).then(notes => {
-    response.json(notes)
-  })
+  Note
+    .find({}).then(notes => {
+      response.json(notes)
+    })
+    .catch(error => next(error))
 })
 
 /**
@@ -81,26 +77,30 @@ app.get('/api/notes', (request, response,next) => {
  */
 app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
-  .then(note => {
-    if (note) {
-      response.json(note.toJSON())
-    } else {
-      response.status(204).end()
-    }
-  })
+    .then(note => {
+      if (note) {
+        response.json(note.toJSON())
+      } else {
+        response.status(204).end()
+      }
+    })
   /**
    * Pass to error middleware via next function
    */
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 /**
  * Delete users by id
  */
-app.delete('/api/notes/:id', (request, response) => {
-  Note.findByIdAndRemove(request.params.id)
-    .then(result => {
-      response.status(204).end()
+app.get('/api/notes/:id', (request, response, next) => {
+  Note.findById(request.params.id)
+    .then(note => {
+      if (note) {
+        response.json(note.toJSON())
+      } else {
+        response.status(204).end()
+      }
     })
     .catch(error => next(error))
 })
@@ -108,7 +108,7 @@ app.delete('/api/notes/:id', (request, response) => {
 /**
  * Update Specific document
  */
-app.put('/api/notes/:id', (request, response, next)=>{
+app.put('/api/notes/:id', (request, response, next) => {
   const body = request.body
 
   const note = {
@@ -117,10 +117,10 @@ app.put('/api/notes/:id', (request, response, next)=>{
   }
 
   Note.findByIdAndUpdate(request.params.id, note, { new: true })
-  .then(updatedNote => {
-    response.json(updatedNote.toJSON())
-  })
-  .catch(error => next(error))
+    .then(updatedNote => {
+      response.json(updatedNote.toJSON())
+    })
+    .catch(error => next(error))
 })
 
 
@@ -135,13 +135,13 @@ app.use(unknownEndpoint)
 /**
  * Error handling middleware
  */
-const errorHandler = (error, request, response, next) =>{
+const errorHandler = (error, request, response, next) => {
   console.log(error.message)
 
   if(error.name === 'CastError' && error.kind === 'ObjectId'){
-    return response.status(400).send({error: 'malformatted id'})
+    return response.status(400).send({ error: 'malformatted id' })
   } else if(error.name === 'ValidationError'){
-    return response.status(400).json({error: error.message})
+    return response.status(400).json({ error: error.message })
   }
   next(error)
 }
