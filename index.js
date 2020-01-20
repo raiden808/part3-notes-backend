@@ -42,13 +42,6 @@ const generateId = () => {
  */
 app.post('/api/notes',(request, response) =>{
   const body = request.body
-
-  if(body.content == undefined){
-    return response.status(400).json({
-      error:'content missing'
-    })
-  }
-
   /**
    * Create new object for mongodb
    */
@@ -57,15 +50,14 @@ app.post('/api/notes',(request, response) =>{
     important:body.imporant || false,
     date: new Date(),
   })
-
   /**
    * save to mongodb
    */
   note.save().then(savedNote => {
     response.json(savedNote.toJSON())
   })
+  .catch(error => error)
 })
-
 
 /**
  * Retrieves json object from mongodb
@@ -140,6 +132,8 @@ const errorHandler = (error, request, response, next) =>{
 
   if(error.name === 'CastError' && error.kind === 'ObjectId'){
     return response.status(400).send({error: 'malformatted id'})
+  } else if(error.name === 'ValidationError'){
+    return response.status(400).json({error: error.message})
   }
   next(error)
 }

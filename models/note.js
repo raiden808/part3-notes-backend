@@ -22,7 +22,7 @@ mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology: true})
 
 /**
  * MongoDB document structure
- * can also add restrictions
+ * can also add restrictions like "required" & "minlength"
  */
 const noteSchema = mongoose.Schema({
     content:{
