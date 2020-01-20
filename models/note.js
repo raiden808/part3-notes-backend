@@ -25,16 +25,16 @@ mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology: true})
  * can also add restrictions like "required" & "minlength"
  */
 const noteSchema = mongoose.Schema({
-    content:{
-        type:String,
-        minlength:5,
-        required:true
-    },
-    date:{
-        type:Date,
+    content: {
+        type: String,
+        minlength: 5,
         required: true
     },
-    important:Boolean,
+    date: { 
+        type: Date,
+        required: true
+    },
+    important: Boolean
 })
 
 /**

@@ -40,23 +40,24 @@ const generateId = () => {
 /**
  * Post using mongoddb
  */
-app.post('/api/notes',(request, response) =>{
+app.post('/api/notes',(request, response, next) =>{
   const body = request.body
   /**
    * Create new object for mongodb
    */
   const note = new Note({
-    content:body.content,
-    important:body.imporant || false,
+    content: body.content,
+    important: body.important || false,
     date: new Date(),
   })
   /**
    * save to mongodb
    */
-  note.save().then(savedNote => {
-    response.json(savedNote.toJSON())
-  })
-  .catch(error => error)
+  note.save()
+    .then(savedNote => {
+      response.json(savedNote.toJSON())
+     })
+    .catch(error => next(error))
 })
 
 /**
@@ -104,15 +105,15 @@ app.put('/api/notes/:id', (request, response, next)=>{
   const body = request.body
 
   const note = {
-    content:body.content,
-    important:body.important
+    content: body.content,
+    important: body.important,
   }
 
   Note.findByIdAndUpdate(request.params.id, note, { new: true })
-    .then(updatedNote => {
-      response.json(updatedNote.toJSON())
-    })
-    .catch(error => next(error))
+  .then(updatedNote => {
+    response.json(updatedNote.toJSON())
+  })
+  .catch(error => next(error))
 })
 
 
