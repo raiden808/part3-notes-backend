@@ -54,9 +54,16 @@ app.post('/api/notes',(request, response, next) =>{
    * save to mongodb
    */
   note.save()
-    .then(savedNote => {
-      response.json(savedNote.toJSON())
-     })
+    /**
+     * format the response into JSON
+     */
+    .then(savedNote => response.json(savedNote.toJSON()))
+    /**
+     * Recieved formatted response
+     */
+    .then(savedAndFormattedNote =>{
+      response.json(savedAndFormattedNote)
+    })
     .catch(error => next(error))
 })
 
