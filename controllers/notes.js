@@ -2,7 +2,6 @@
  * Typically Event handlers of routes should
  * fall inside here as `controllers`
  */
-
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
 
@@ -26,6 +25,39 @@ notesRouter.get('/:id', (request, response, next) => {
             }else{
                 response.status(404).end()
             }
+        })
+        .catch(error => next(error))
+})
+
+/**
+ * Post using MongoDB
+ */
+notesRouter.post('/', (request, response, next) =>{
+    const body = request.body
+
+    /**
+     * New note Object
+     */
+    const note = new Note({
+        content: body.content,
+        important: body.important || false,
+        date: new Date()
+    })
+
+    note.save()
+        .then(savedNote => {
+            response.json(savedNote.toJSON())
+        })
+        .catch(error => next(error))
+})
+
+/**
+ * Delete using MongoDB
+ */
+notesRouter.delete('/:id',(request, response, next) => {
+    Note.findByIdAndRemove(request.id.params)
+        .then(() => {
+            response.status(204).end()
         })
         .catch(error => next(error))
 })
