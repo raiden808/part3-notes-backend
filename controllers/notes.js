@@ -19,7 +19,7 @@ notesRouter.get('/',(request, response) => {
  */
 notesRouter.get('/:id', (request, response, next) => {
     Note.findById(request.params.id)
-        .then(note =>{
+        .then(note => {
             if(note){
                 response.json(note.toJSON())
             }else{
@@ -32,7 +32,7 @@ notesRouter.get('/:id', (request, response, next) => {
 /**
  * Post using MongoDB
  */
-notesRouter.post('/', (request, response, next) =>{
+notesRouter.post('/', (request, response, next) => {
     const body = request.body
 
     /**
@@ -61,3 +61,23 @@ notesRouter.delete('/:id',(request, response, next) => {
         })
         .catch(error => next(error))
 })
+
+/**
+ * Update specific document in MongoDB
+ */
+notesRouter.put('/:id', (request, response, next) => {
+    const body = request.body
+
+    const note = {
+        content: body.content,
+        important: body.important
+    }
+
+    Note.findByIdAndUpdate(request.params.id, note , { new : true })
+        .then(updatedNote => {
+            response.json(updatedNote.toJSON())
+        })
+        .catch(error => next(error))
+})
+
+module.exports = notesRouter
