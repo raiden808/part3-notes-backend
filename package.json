@@ -9,7 +9,7 @@
     "build:ui": "rm -rf build && cd ../../studies/fullstackopen-notes && npm run build --prod && cp -r build ../../studies/part3-notes-backend/",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin master && npm run deploy",
-    "lint": "node_modules/.bin/eslint",
+    "lint": "./node_modules/.bin/eslint",
     "logs:prod": "heroku logs --tail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
