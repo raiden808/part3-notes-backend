@@ -93,14 +93,10 @@ app.get('/api/notes/:id', (request, response, next) => {
 /**
  * Delete users by id
  */
-app.get('/api/notes/:id', (request, response, next) => {
-  Note.findById(request.params.id)
-    .then(note => {
-      if (note) {
-        response.json(note.toJSON())
-      } else {
-        response.status(204).end()
-      }
+app.delete('/api/notes/:id', (request, response, next) => {
+  Note.findByIdAndRemove(request.params.id)
+    .then(() => {
+      response.status(204).end()
     })
     .catch(error => next(error))
 })
