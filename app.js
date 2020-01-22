@@ -38,4 +38,27 @@ app.use(express.static('build'))
  */
 app.use(bodyParser.json())
 
+/**
+ * Error logger middleware
+ */
+app.use(middleware.requestLogger)
+
+/**
+ * Base url for api
+ */
+app.use('/api/notes', notesRouter)
+
+/**
+ * Unknown endpoint middleware
+ */
+app.use(middleware.unknownEndpoint)
+
+/**
+ * Custom error handling middleware
+ */
+app.use(middleware.errorHandler)
+
+module.exports = app
+
+
 
