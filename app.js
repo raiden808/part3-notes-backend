@@ -15,7 +15,7 @@ console.log('Connecting to', config.MONGODB_URI)
  * @param config.MONGODB_URI connection from .env
  * @param useNewUrlParser remove depreceated warning
  */
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to MongoDB')
     })
