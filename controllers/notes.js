@@ -55,7 +55,7 @@ notesRouter.post('/', (request, response, next) => {
  * Delete using MongoDB
  */
 notesRouter.delete('/:id',(request, response, next) => {
-    Note.findByIdAndRemove(request.id.params)
+    Note.findByIdAndRemove(request.params.id)
         .then(() => {
             response.status(204).end()
         })
