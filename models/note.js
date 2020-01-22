@@ -1,3 +1,6 @@
+/**
+ * Schema model of the app
+ */
 const mongoose = require('mongoose')
 
 mongoose.set('useFindAndModify', false)
