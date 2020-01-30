@@ -11,7 +11,7 @@
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin master && npm run deploy",
     "lint": "./node_modules/.bin/eslint",
     "logs:prod": "heroku logs --tail",
-    "test": "cross-env NODE_ENV=test jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Rey Den Nalasa",
   "license": "ISC",
