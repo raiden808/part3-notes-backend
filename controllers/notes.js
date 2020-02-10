@@ -8,10 +8,9 @@ const Note = require('../models/note')
 /**
  * Retrieves json object from mongodb
  */
-notesRouter.get('/',(request, response) => {
-    Note.find({}).then(notes => {
-        response.json(notes.map(note => note.toJSON()))
-    })
+notesRouter.get('/', async (request, response) => {
+   const notes = await Note.find({})
+   response.json(notes.map(note => note.toJSON()))
 })
 
 /**
