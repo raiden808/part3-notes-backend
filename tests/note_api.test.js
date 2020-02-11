@@ -61,7 +61,7 @@ test('a specific note is within the returned notes',async () => {
     /**
      * Form array of contents
      */
-    const contents = response.body.map(r => r.content)
+    const contents = reponse.body.map(r => r.content)
 
     /**
      * toContain() - Check if param exist in array.
