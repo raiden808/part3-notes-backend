@@ -30,8 +30,9 @@ notesRouter.get('/:id', (request, response, next) => {
 
 /**
  * Post using MongoDB
+ * Using Async
  */
-notesRouter.post('/', (request, response, next) => {
+notesRouter.post('/', async (request, response, next) => {
     const body = request.body
 
     /**
@@ -39,15 +40,20 @@ notesRouter.post('/', (request, response, next) => {
      */
     const note = new Note({
         content: body.content,
-        important: body.important || false,
+        important: body.important === undefined ? false : body.important,
         date: new Date()
     })
 
-    note.save()
-        .then(savedNote => {
-            response.json(savedNote.toJSON())
-        })
-        .catch(error => next(error))
+    
+    try{
+        const savedNote = await note.save()
+        response.json(savedNote.toJSON())
+    }catch(exception) {
+        /**
+         * Important to use next() to pass for the next middleware
+         */
+        next(exception)
+    }
 })
 
 /**
