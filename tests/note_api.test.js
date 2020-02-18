@@ -21,12 +21,12 @@ beforeEach(async () =>{
 
     /** 
      * Saved initial notes to mongo db
+     * Jest excecutes when promise is done.
      */
-    let noteObject = new Note(helper.initialNotes[0])
-    await noteObject.save()
-
-    noteObject = new Note(helper.initialNotes[1])
-    await noteObject.save()
+    const noteObjects = helper.initialNotes
+      .map(note => new Note(note))
+    const promiseArray = noteObjects.map(note => note.save())
+    await Promise.all(promiseArray)
 })
 
 
