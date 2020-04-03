@@ -4,6 +4,7 @@ const bodyParser   = require('body-parser')
 const app          = express()
 const cors         = require('cors')
 const notesRouter  = require('./controllers/notes')
+const usersRouter  = require('./controllers/users')
 const middleware   = require('./utils/middleware')
 const mongoose     = require('mongoose')
 
@@ -49,6 +50,11 @@ app.use(middleware.requestLogger)
  * Base url for api
  */
 app.use('/api/notes', notesRouter)
+
+/**
+ * Base api for users
+ */
+app.use('/api/users', usersRouter)
 
 /**
  * Unknown endpoint middleware

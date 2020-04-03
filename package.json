@@ -12,11 +12,12 @@
     "lint": "./node_modules/.bin/eslint",
     "logs:prod": "heroku logs --tail",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "test:spec" : "cross-env NODE_ENV=test jest -t 'note' --verbose --runInBand"
+    "test:spec": "cross-env NODE_ENV=test jest -t 'note' --verbose --runInBand"
   },
   "author": "Rey Den Nalasa",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
