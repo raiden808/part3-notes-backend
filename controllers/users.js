@@ -2,6 +2,17 @@ const bcrypt      = require('bcrypt')
 const usersRouter = require('express').Router()
 const User        = require('../models/user')
 
+/**
+ * Returns list of user to the database
+ */
+usersRouter.get('/', async(request, response) => {
+    const users = User.find({})
+    response.json(users.map(u => u.toJSON()))
+})
+
+/**
+ * Adds a user to the database
+ */
 usersRouter.post('/', async (request, response) => {
     const body = request.body
 

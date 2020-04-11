@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+
+
 
 /**
  * Create user Schema
@@ -17,6 +20,8 @@ const userSchema = new mongoose.Schema({
         }
     ],
 })
+
+userSchema.plugin(uniqueValidator)
 
 /**
  * Modify returned data
