@@ -5,10 +5,10 @@ const User        = require('../models/user')
 /**
  * Returns list of user to the database
  */
-usersRouter.get('/', async(request, response) => {
-    const users = User.find({})
+usersRouter.get('/', async (request, response) => {
+    const users = await User.find({})
     response.json(users.map(u => u.toJSON()))
-})
+  })
 
 /**
  * Adds a user to the database
