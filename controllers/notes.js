@@ -4,13 +4,14 @@
  */
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
+const User = require('../models/user')
 
 /**
  * Retrieves json object from mongodb
  */
 notesRouter.get('/', async (request, response) => {
-   const notes = await Note.find({})
-   response.json(notes.map(note => note.toJSON()))
+    const notes = await Note.find({})
+    response.json(notes.map(note => note.toJSON()))
 })
 
 
@@ -21,9 +22,9 @@ notesRouter.get('/:id', async (request, response, next) => {
     try{
         const note = await Note.findById(request.params.id)
         if (note) {
-          response.json(note.toJSON())
+            response.json(note.toJSON())
         } else {
-          response.status(404).end()
+            response.status(404).end()
         }
     } catch(exception) {
         next(exception)
@@ -38,17 +39,30 @@ notesRouter.post('/', async (request, response, next) => {
     const body = request.body
 
     /**
+     * Check user id exist in the database
+     */
+    const user = await User.findById(body.userId)
+
+    /**
      * New note Object
      */
     const note = new Note({
         content: body.content,
         important: body.important === undefined ? false : body.important,
-        date: new Date()
+        date: new Date(),
+        user: user._id
     })
 
     
     try{
         const savedNote = await note.save()
+
+        /**
+         * Saved notes id in the schema
+         */
+        user.notes = user.notes.concat(savedNote.id)
+        await user.save()
+
         response.json(savedNote.toJSON())
     }catch(exception) {
         /**
@@ -65,9 +79,9 @@ notesRouter.delete('/:id', async(request, response, next) => {
     try {
         await Note.findByIdAndRemove(request.params.id)
         response.status(204).end()
-      } catch (exception) {
+    } catch (exception) {
         next(exception)
-      }
+    }
 })
 
 /**
