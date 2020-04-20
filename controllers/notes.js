@@ -10,7 +10,14 @@ const User = require('../models/user')
  * Retrieves json object from mongodb
  */
 notesRouter.get('/', async (request, response) => {
-    const notes = await Note.find({})
+    
+    /**
+     * Retrieves user schema set by the user reference
+     */
+    const notes = await Note
+        .find({}).populate('user', { username: 1, name: 1 })
+
+
     response.json(notes.map(note => note.toJSON()))
 })
 
