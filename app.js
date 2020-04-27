@@ -8,6 +8,8 @@ const usersRouter  = require('./controllers/users')
 const middleware   = require('./utils/middleware')
 const mongoose     = require('mongoose')
 
+const loginRouter = require('./controllers/login')
+
 const logger = require('./utils/logger')
 
 
@@ -55,6 +57,11 @@ app.use('/api/notes', notesRouter)
  * Base api for users
  */
 app.use('/api/users', usersRouter)
+
+/**
+ * Base api for login
+ */
+app.use('/api/login', loginRouter)
 
 /**
  * Unknown endpoint middleware
