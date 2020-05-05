@@ -7,6 +7,21 @@ const Note = require('../models/note')
 const User = require('../models/user')
 
 /**
+ * import token library
+ */
+const jwt = require('jsonwebtoken')
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
+    }
+    return null
+}
+
+
+/**
  * Retrieves json object from mongodb
  */
 notesRouter.get('/', async (request, response) => {
@@ -47,8 +62,14 @@ notesRouter.post('/', async (request, response, next) => {
 
     /**
      * Check user id exist in the database
+     * and verify token
      */
-    const user = await User.findById(body.userId)
+    const token = getTokenFrom(request)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
 
     /**
      * New note Object
@@ -60,7 +81,6 @@ notesRouter.post('/', async (request, response, next) => {
         user: user._id
     })
 
-    
     try{
         const savedNote = await note.save()
 
