@@ -1,8 +1,8 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RfdXNlciIsImlkIjoiNWU5NjYzOGM1ZTNlZjUyYmE0NTY4MGI3IiwiaWF0IjoxNTg4ODE2MjM4fQ.TF1Jojm880dvoEJEU7-A6g62bFtc2srlE3sRWwnn3og
 
 {
-    "content":"New note test 1",
-    "important":true,
-    "userId": "5e96638c5e3ef52ba45680b7"
+    "content":"New note test 2",
+    "important":true
 }
